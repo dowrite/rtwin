@@ -41,18 +41,27 @@ Vagrant.configure("2") do |config|
     # Install 7-Zip
     choco install 7zip -y
 
+    # Install Python 3 & pip
+    choco install python -y
+    $env:Path += ";$((Get-Command python).Path | Split-Path)"
+    python -m ensurepip --upgrade
+
     # Install Eric Zimmerman's tools
     choco install zimmerman-tools -y
+
+    # Install pip and FakeDNS
+    pip install FakeDNS
+
+    # Set up a script to run FakeDNS
+    $scriptPath = "C:\\FakeDNS"
+    New-Item -ItemType Directory -Force -Path $scriptPath
+    Set-Content -Path "$scriptPath\\run_fakedns.ps1" -Value 'python -m FakeDNS -p 53 -a 127.0.0.1'
 
     # Download and install Immunity Debugger
     $immunityUrl = "https://www.immunityinc.com/downloads/debugger/ImmunityDebuggerSetup.exe"
     $installerPath = "$env:TEMP\\ImmunityDebuggerSetup.exe"
     Invoke-WebRequest -Uri $immunityUrl -OutFile $installerPath
-
-    # Run the installer silently
     Start-Process -FilePath $installerPath -ArgumentList "/S" -NoNewWindow -Wait
-
-    # Clean up installer file
     Remove-Item -Path $installerPath -Force
 
 
