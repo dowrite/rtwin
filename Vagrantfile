@@ -45,12 +45,9 @@ Vagrant.configure("2") do |config|
     choco install ericzimmermantools -y
 
     # Install FakeDNS
-    python -m pip install FakeDNS
-      # Set up a script to run FakeDNS
-    $scriptPath = "C:\\FakeDNS"
-    New-Item -ItemType Directory -Force -Path $scriptPath
-    Set-Content -Path "$scriptPath\\run_fakedns.ps1" -Value 'python -m FakeDNS -p 53 -a 127.0.0.1'
-
+    python -m pip install fakedns
+    fakedns-init
+  
     # Download and install Immunity Debugger
     $immunityUrl = "https://www.immunityinc.com/downloads/debugger/ImmunityDebuggerSetup.exe"
     $installerPath = "$env:TEMP\\ImmunityDebuggerSetup.exe"
