@@ -13,20 +13,14 @@ Vagrant.configure("2") do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
   config.vm.box = "gusztavvargadr/windows-10"
-  vm.gui = true
 
   # VMWare-specific configuration  
   config.vm.provider :vmware_desktop do |vmware|
+    vmware.gui = true
     # Customize the amount of memory on the VM:
     vmware.memory = "8192"
-    vmware.vmx['displayname'] = "RTKali"
-  end
-
-  # If not on macOS, set VMware hardware compatibility version to 16
-  unless RUBY_PLATFORM.include?("darwin")
-    config.vm.provider "vmware_workstation" do |v|
-      v.vmx["virtualHW.version"] = "16"
-    end
+    vmware.vmx['displayname'] = "RTWin"
+    vmware.vmx["virtualHW.version"] = "16"
   end
 
   # Provisioning script to install Chocolatey and 7-Zip
