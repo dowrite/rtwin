@@ -39,14 +39,14 @@ Vagrant.configure("2") do |config|
     choco install python -y
     $env:Path += ";$((Get-Command python).Path | Split-Path)"
     python -m ensurepip --upgrade
+    python -m pip install --upgrade pip
 
     # Install Eric Zimmerman's tools
-    choco install zimmerman-tools -y
+    choco install ericzimmermantools -y
 
-    # Install pip and FakeDNS
-    pip install FakeDNS
-
-    # Set up a script to run FakeDNS
+    # Install FakeDNS
+    python -m pip install FakeDNS
+      # Set up a script to run FakeDNS
     $scriptPath = "C:\\FakeDNS"
     New-Item -ItemType Directory -Force -Path $scriptPath
     Set-Content -Path "$scriptPath\\run_fakedns.ps1" -Value 'python -m FakeDNS -p 53 -a 127.0.0.1'
