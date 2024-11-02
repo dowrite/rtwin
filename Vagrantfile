@@ -46,7 +46,24 @@ Vagrant.configure("2") do |config|
 
     # Install FakeDNS
     python -m pip install fakedns
-    fakedns-init
+    fakedns-config init
+
+    # Disable sleep
+    powercfg -change -standby-timeout-ac 0
+    powercfg -change -standby-timeout-dc 0
+
+    # Disable screen lock
+    Set-ItemProperty -Path "HKCU:\\Control Panel\\Desktop" -Name "ScreenSaveActive" -Value "0"
+    Set-ItemProperty -Path "HKCU:\\Control Panel\\Desktop" -Name "ScreenSaveTimeOut" -Value "0"
+
+    # Uninstall OneDrive
+    if (Get-Command "C:\\Program Files\\Microsoft OneDrive\\OneDrive.exe" -ErrorAction SilentlyContinue) {
+      Write-Host "Uninstalling OneDrive..."
+      & "C:\\Program Files\\Microsoft OneDrive\\Uninstall.exe" /uninstall
+    } else {
+      Write-Host "OneDrive is not installed."
+    }
+
 
   SHELL
 end
