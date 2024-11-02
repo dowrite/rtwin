@@ -47,14 +47,6 @@ Vagrant.configure("2") do |config|
     # Install FakeDNS
     python -m pip install fakedns
     fakedns-init
-  
-    # Download and install Immunity Debugger
-    $immunityUrl = "https://www.immunityinc.com/downloads/debugger/ImmunityDebuggerSetup.exe"
-    $installerPath = "$env:TEMP\\ImmunityDebuggerSetup.exe"
-    Invoke-WebRequest -Uri $immunityUrl -OutFile $installerPath
-    Start-Process -FilePath $installerPath -ArgumentList "/S" -NoNewWindow -Wait
-    Remove-Item -Path $installerPath -Force
-
 
   SHELL
 end

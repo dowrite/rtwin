@@ -7,7 +7,6 @@ RT Windows gives you a trial Windows 10 Enterprise VM with these additional cust
   - python
   - Eric Zimmerman Tools
   - FakeDNS
-  - immunity debugger
 
 # INSTALLATION
 ### PREREQUISITES
