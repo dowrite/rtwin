@@ -32,6 +32,15 @@ Vagrant.configure("2") do |config|
       iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
     }
 
+    # Disable sleep
+    powercfg -change -standby-timeout-ac 0
+    powercfg -change -standby-timeout-dc 0
+
+    # Disable screen lock
+    Set-ItemProperty -Path "HKCU:\\Control Panel\\Desktop" -Name "ScreenSaveActive" -Value "0"
+    Set-ItemProperty -Path "HKCU:\\Control Panel\\Desktop" -Name "ScreenSaveTimeOut" -Value "0"
+
+    
     # Install 7-Zip
     choco install 7zip -y
 
@@ -48,13 +57,12 @@ Vagrant.configure("2") do |config|
     python -m pip install fakedns
     fakedns-config init
 
-    # Disable sleep
-    powercfg -change -standby-timeout-ac 0
-    powercfg -change -standby-timeout-dc 0
-
-    # Disable screen lock
-    Set-ItemProperty -Path "HKCU:\\Control Panel\\Desktop" -Name "ScreenSaveActive" -Value "0"
-    Set-ItemProperty -Path "HKCU:\\Control Panel\\Desktop" -Name "ScreenSaveTimeOut" -Value "0"
+    # Install VS Community with .NET
+    if (!(Test-Path -Path "C:\\temp")) {
+      New-Item -ItemType Directory -Path "C:\\temp"
+    }
+    Invoke-WebRequest -Uri "https://aka.ms/vs/17/release/vs_community.exe" -OutFile "C:\\temp\\vs_community.exe"
+    Start-Process -FilePath "C:\\temp\\vs_community.exe" -ArgumentList '--quiet --wait --norestart --add Microsoft.VisualStudio.Workload.ManagedDesktop' -NoNewWindow -Wait
 
   SHELL
 end
