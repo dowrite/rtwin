@@ -32,6 +32,15 @@ Vagrant.configure("2") do |config|
       iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
     }
 
+    # Disable sleep
+    powercfg -change -standby-timeout-ac 0
+    powercfg -change -standby-timeout-dc 0
+
+    # Disable screen lock
+    Set-ItemProperty -Path "HKCU:\\Control Panel\\Desktop" -Name "ScreenSaveActive" -Value "0"
+    Set-ItemProperty -Path "HKCU:\\Control Panel\\Desktop" -Name "ScreenSaveTimeOut" -Value "0"
+
+    
     # Install 7-Zip
     choco install 7zip -y
 
@@ -45,19 +54,15 @@ Vagrant.configure("2") do |config|
     choco install ericzimmermantools -y
 
     # Install FakeDNS
-    python -m pip install FakeDNS
-      # Set up a script to run FakeDNS
-    $scriptPath = "C:\\FakeDNS"
-    New-Item -ItemType Directory -Force -Path $scriptPath
-    Set-Content -Path "$scriptPath\\run_fakedns.ps1" -Value 'python -m FakeDNS -p 53 -a 127.0.0.1'
+    python -m pip install fakedns
+    fakedns-config init
 
-    # Download and install Immunity Debugger
-    $immunityUrl = "https://www.immunityinc.com/downloads/debugger/ImmunityDebuggerSetup.exe"
-    $installerPath = "$env:TEMP\\ImmunityDebuggerSetup.exe"
-    Invoke-WebRequest -Uri $immunityUrl -OutFile $installerPath
-    Start-Process -FilePath $installerPath -ArgumentList "/S" -NoNewWindow -Wait
-    Remove-Item -Path $installerPath -Force
-
+    # Install VS Community with .NET
+    if (!(Test-Path -Path "C:\\temp")) {
+      New-Item -ItemType Directory -Path "C:\\temp"
+    }
+    Invoke-WebRequest -Uri "https://aka.ms/vs/17/release/vs_community.exe" -OutFile "C:\\temp\\vs_community.exe"
+    Start-Process -FilePath "C:\\temp\\vs_community.exe" -ArgumentList '--quiet --wait --norestart --add Microsoft.VisualStudio.Workload.ManagedDesktop' -NoNewWindow -Wait
 
   SHELL
 end
