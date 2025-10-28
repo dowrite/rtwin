@@ -12,7 +12,7 @@ RT Windows gives you a trial Windows 10 Enterprise VM with these additional cust
 ### PREREQUISITES
 The following SW must be installed on the host machine before following the installation steps: 
   - [Vagrant](https://developer.hashicorp.com/vagrant/downloads)
-  - VMWare Workstation Pro or [VMWare Workstation Player](https://www.vmware.com/content/vmware/vmware-published-sites/us/products/workstation-player.html)
+  - [VMWare Workstation](https://www.vmware.com/products/desktop-hypervisor/workstation-and-fusion)
   - [VS Code](https://code.visualstudio.com/download)
 
 ### 1. Install Vagrant VMWare Utility
@@ -43,3 +43,4 @@ The first time `vagrant up` is run, the VM is created and `vagrant provision` is
     ``` 
 ### 5. Login
   - Login to rtwin (default creds: vagrant/vagrant)
+
